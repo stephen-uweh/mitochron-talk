@@ -14,10 +14,34 @@ export class Talk {
     @Prop([{type: MongooseSchema.Types.ObjectId, ref: Attendee.name}])
     @Type(() => Object)
     attendees: any
+
+    @Prop({default: false})
+    inSession: boolean
+}
+
+
+@Schema({ timestamps: true })
+export class Message {
+    @Transform(({ value }) => value.toString())
+    _id: Types.ObjectId;
+
+    @Prop()
+    attendeeId: string;
+
+    @Prop()
+    talkId: string
+
+    @Prop()
+    message: string;
 }
 
 
 export type TalkDocument = Talk & Document;
 
 export const TalkSchema = SchemaFactory.createForClass(Talk);
+
+
+export type MessageDocument = Message & Document;
+
+export const MessageSchema = SchemaFactory.createForClass(Message);
 

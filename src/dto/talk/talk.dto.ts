@@ -14,7 +14,18 @@ export class GetSingleTalk {
 export class AddAttendeeeToTalk {
     @IsString()
     talkId: string;
-    
+
     @IsString()
     attendeeId: string
+}
+
+export class SendMessage {
+    @IsString()
+    talkId: string;
+
+    @IsString()
+    attendeeId: string;
+
+    @IsString()
+    message: string;
 }

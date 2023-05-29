@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { FilterQuery, Model } from 'mongoose';
-import { Talk } from 'src/dto/talk/talk.schema';
+import { Message, Talk } from 'src/dto/talk/talk.schema';
 
 @Injectable()
 export class TalkRepository {
@@ -35,4 +35,14 @@ export class TalkRepository {
     }
 
 
+}
+
+
+export class MessageRepository {
+    constructor(@InjectModel(Message.name) private messageModel: Model<Message>) {}
+
+    public async create(message): Promise <Message>{
+        const newTalk = new this.messageModel(message)
+        return newTalk;
+    }
 }

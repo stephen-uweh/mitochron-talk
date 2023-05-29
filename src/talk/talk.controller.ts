@@ -1,7 +1,7 @@
 import { Controller, Get, Res, Body, Post, Query, Param, Patch, Delete } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { TalkService } from './talk.service';
-import { AddAttendeeeToTalk, AddTalkInput, GetSingleTalk } from 'src/dto/talk/talk.dto';
+import { AddAttendeeeToTalk, AddTalkInput, GetSingleTalk, SendMessage } from 'src/dto/talk/talk.dto';
 import { query } from 'express';
 
 
@@ -29,9 +29,28 @@ export class TalkController {
         return res.status(response.responseCode).send(response)
     }
 
+    @Get('start')
+    async startTalk(@Res() res, @Query() query:GetSingleTalk){
+        const response = await this.talkService.startTalk(query.id)
+        return res.status(response.responseCode).send(response)
+    }
+
+    @Get('end')
+    async endTalk(@Res() res, @Query() query:GetSingleTalk){
+        const response = await this.talkService.endTalk(query.id)
+        return res.status(response.responseCode).send(response)
+    }
+
     @Patch('/add-attendee')
     async addAttendee(@Res() res, @Body() body: AddAttendeeeToTalk){
         const response = await this.talkService.addAttendee(body)
+        return res.status(response.responseCode).send(response)
+    }
+
+
+    @Post('send-message')
+    async sendMessage(@Res() res, @Body() body: SendMessage){
+        const response = await this.talkService.sendMessage(body)
         return res.status(response.responseCode).send(response)
     }
 

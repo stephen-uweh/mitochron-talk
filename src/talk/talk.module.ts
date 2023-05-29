@@ -1,17 +1,19 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Talk, TalkSchema } from 'src/dto/talk/talk.schema';
-import { TalkRepository } from './talk.repository';
+import { Message, MessageSchema, Talk, TalkSchema } from 'src/dto/talk/talk.schema';
+import { MessageRepository, TalkRepository } from './talk.repository';
 import { TalkController } from './talk.controller';
 import { TalkService } from './talk.service';
 import { Attendee, AttendeeSchema } from 'src/dto/attendee/attendee.schema';
+import { TalkGateway } from './talk.gateway';
 
 
 @Module({
   imports: [
     MongooseModule.forFeature([
         { name: Attendee.name, schema: AttendeeSchema},
-        { name: Talk.name, schema: TalkSchema }
+        { name: Talk.name, schema: TalkSchema },
+        { name: Message.name, schema: MessageSchema}
 
     ]),
     MongooseModule.forFeature([]),
@@ -35,6 +37,6 @@ import { Attendee, AttendeeSchema } from 'src/dto/attendee/attendee.schema';
     // ]),
   ],
   controllers: [TalkController],
-  providers: [TalkRepository, TalkService],
+  providers: [TalkRepository, TalkService, TalkGateway, MessageRepository],
 })
 export class TalkModule {}
