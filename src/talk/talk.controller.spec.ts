@@ -7,7 +7,7 @@ import { TalkGateway } from './talk.gateway';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Attendee, AttendeeSchema } from '../dto/attendee/attendee.schema';
 import { Message, MessageSchema, Talk, TalkSchema } from '../dto/talk/talk.schema';
-import { GetSingleTalk, AddTalkInput } from '../dto/talk/talk.dto';
+import { GetSingleTalk, AddTalkInput, SendMessage } from '../dto/talk/talk.dto';
 
 describe('TalkController', () => {
   let talkController: TalkController;
@@ -71,6 +71,15 @@ describe('TalkController', () => {
         const result = {responseCode: 200, status:true, message: '', data: {}, meta: {}}
         jest.spyOn(talkService, 'deleteTalk').mockImplementation(async () => result)
         expect(await talkService.deleteTalk(id)).toBe(result)
+      }) 
+  })
+
+  describe("Send a message", () => {
+    it("should return 200", async () => {
+        const dto = new SendMessage();
+        const result = {responseCode: 200, status:true, message: '', data: {}, meta: {}}
+        jest.spyOn(talkService, 'sendMessage').mockImplementation(async () => result)
+        expect(await talkService.sendMessage(dto)).toBe(result)
       }) 
   })
 
