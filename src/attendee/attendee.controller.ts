@@ -1,7 +1,7 @@
 import { Controller, Get, Res, Body, Post, Query, Param } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { AttendeeService } from './attendee.service';
-import { AddAttendeeInput, GetSingleAttendeeInput } from 'src/dto/attendee/attendee.dto';
+import { AddAttendeeInput, GetSingleAttendeeInput } from '../dto/attendee/attendee.dto';
 
 @ApiTags('Attendees')
 @Controller('attendees')

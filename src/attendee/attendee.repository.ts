@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { FilterQuery, Model } from 'mongoose';
-import { Attendee } from 'src/dto/attendee/attendee.schema';
+import { Attendee } from '../dto/attendee/attendee.schema';
 
 @Injectable()
 export class AttendeesRepository {

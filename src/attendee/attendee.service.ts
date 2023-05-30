@@ -1,10 +1,10 @@
 import { Injectable } from "@nestjs/common";
 import { config } from 'dotenv';
 import { AttendeesRepository } from "./attendee.repository";
-import { SuccessResponse } from "src/response/success";
-import { ErrorResponse } from "src/response/errors";
-import { AddAttendeeInput, GetSingleAttendeeInput } from "src/dto/attendee/attendee.dto";
-import { validateAttendee } from "src/validation/attendee.validation";
+import { SuccessResponse } from "../response/success";
+import { ErrorResponse } from "../response/errors";
+import { AddAttendeeInput, GetSingleAttendeeInput } from "../dto/attendee/attendee.dto";
+import { validateAttendee } from "../validation/attendee.validation";
 
 
 config();
