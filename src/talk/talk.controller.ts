@@ -1,7 +1,7 @@
 import { Controller, Get, Res, Body, Post, Query, Param, Patch, Delete } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { TalkService } from './talk.service';
-import { AddAttendeeeToTalk, AddTalkInput, GetSingleTalk, SendMessage } from 'src/dto/talk/talk.dto';
+import { AddAttendeeeToTalk, AddTalkInput, GetSingleTalk, SendMessage } from '../dto/talk/talk.dto';
 import { query } from 'express';
 
 

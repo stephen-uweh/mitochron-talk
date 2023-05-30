@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { FilterQuery, Model } from 'mongoose';
-import { Message, Talk } from 'src/dto/talk/talk.schema';
+import { Message, Talk } from '../dto/talk/talk.schema';
 
 @Injectable()
 export class TalkRepository {

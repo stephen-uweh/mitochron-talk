@@ -1,13 +1,13 @@
 import { Injectable } from "@nestjs/common";
 import { config } from 'dotenv';
-import { SuccessResponse } from "src/response/success";
-import { ErrorResponse } from "src/response/errors";
+import { SuccessResponse } from "../response/success";
+import { ErrorResponse } from "../response/errors";
 import { MessageRepository, TalkRepository } from "./talk.repository";
-import { validateTalk } from "src/validation/talk.validation";
-import { AddTalkInput } from "src/dto/talk/talk.dto";
+import { validateTalk } from "../validation/talk.validation";
+import { AddTalkInput } from "../dto/talk/talk.dto";
 import { TalkGateway } from "./talk.gateway";
 import mongoose from "mongoose";
-import { validateMessage } from "src/validation/message.validation";
+import { validateMessage } from "../validation/message.validation";
 
 
 config();
@@ -61,7 +61,8 @@ export class TalkService {
     }
 
     async startTalk(talkId:any){
-        const talk = await this.talkRepository.findOneAndUpdate({_id:talkId}, {inSession: true});
+        let id = new mongoose.Types.ObjectId(talkId)
+        const talk = await this.talkRepository.findOneAndUpdate({_id:id}, {inSession: true});
         return SuccessResponse(
             200,
             "Talk started",
