@@ -4,17 +4,23 @@ import { SuccessResponse } from "../response/success";
 import { ErrorResponse } from "../response/errors";
 import { MessageRepository, TalkRepository } from "./talk.repository";
 import { validateTalk } from "../validation/talk.validation";
-import { AddTalkInput } from "../dto/talk/talk.dto";
+import { AddAttendeeeToTalk, AddTalkInput } from "../dto/talk/talk.dto";
 import { TalkGateway } from "./talk.gateway";
 import mongoose from "mongoose";
 import { validateMessage } from "../validation/message.validation";
+import { AttendeesRepository } from "src/attendee/attendee.repository";
 
 
 config();
 
 @Injectable()
 export class TalkService {
-    constructor(private talkRepository: TalkRepository, private talkGateway: TalkGateway, private messageRepository: MessageRepository){}
+    constructor(
+        private talkRepository: TalkRepository, 
+        private talkGateway: TalkGateway, 
+        private messageRepository: MessageRepository, 
+        private attendeeRepository: AttendeesRepository
+    ){}
 
     async getAllTalks(){
         const talks = await this.talkRepository.find({})
@@ -81,7 +87,7 @@ export class TalkService {
         )
     }
 
-    async addAttendee(body){
+    async addAttendee(body:AddAttendeeeToTalk){
         const talk = await this.talkRepository.findOne({_id:body.talkId})
         if(!talk){
             return ErrorResponse(
@@ -91,16 +97,40 @@ export class TalkService {
                 null
             )
         }
-        if(!(talk.attendees.includes(body.attendeeId))){
-            talk.attendees.push(body.attendeeId)
+        // Check if attendee is registered - Returns 404 if attendee is not found
+        let attendee = await this.attendeeRepository.findOne({email: body.attendeeEmail});
+        if(!attendee){
+            return ErrorResponse(
+                404,
+                "Attendee not registered",
+                null,
+                null
+            )
         }
-        const updatedTalk = await this.talkRepository.findOneAndUpdate({_id:body.talkId}, {attendees: talk.attendees})
-        return SuccessResponse(
-            200,
-            "Attendee added to talk successfully",
-            updatedTalk,
+        
+
+
+        // Check if attendee has been added to talk. Adds attendee if false
+        let attendeeIndex = talk.attendees.findIndex(x => x.email == body.attendeeEmail)
+        if(attendeeIndex < 0){
+            talk.attendees.push(attendee._id)
+            const updatedTalk = await this.talkRepository.findOneAndUpdate({_id:body.talkId}, {attendees: talk.attendees})
+            return SuccessResponse(
+                200,
+                "Attendee added to talk successfully",
+                updatedTalk,
+                null
+            )
+        }
+
+        return ErrorResponse(
+            400,
+            "Attendee already added to talk",
+            null,
             null
         )
+
+        
     }
 
     async deleteTalk(id:any){
@@ -121,6 +151,14 @@ export class TalkService {
         }
 
         let talk = await this.talkRepository.findOne({_id:body.talkId})
+        if(!talk){
+            return ErrorResponse(
+                404,
+                "Talk not found",
+                null,
+                null
+            )
+        }
         if(talk.inSession != true){
             return ErrorResponse(
                 400,
@@ -130,8 +168,8 @@ export class TalkService {
             )
         }
 
-        let index = talk.attendees.findIndex(x => x._id == body.attendeeId)
-        if(index < 0){
+        let attendeeIndex = talk.attendees.findIndex(x => x.email == body.attendeeEmail)
+        if(attendeeIndex < 0){
             return ErrorResponse(
                 400,
                 "Cannot send messages because attendee is not registered for this Talk",

@@ -16,7 +16,7 @@ export class AddAttendeeeToTalk {
     talkId: string;
 
     @IsString()
-    attendeeId: string
+    attendeeEmail: string
 }
 
 export class SendMessage {
@@ -24,7 +24,7 @@ export class SendMessage {
     talkId: string;
 
     @IsString()
-    attendeeId: string;
+    attendeeEmail: string;
 
     @IsString()
     message: string;

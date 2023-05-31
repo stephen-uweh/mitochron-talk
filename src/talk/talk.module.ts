@@ -6,6 +6,7 @@ import { TalkController } from './talk.controller';
 import { TalkService } from './talk.service';
 import { Attendee, AttendeeSchema } from 'src/dto/attendee/attendee.schema';
 import { TalkGateway } from './talk.gateway';
+import { AttendeesRepository } from 'src/attendee/attendee.repository';
 
 
 @Module({
@@ -37,6 +38,6 @@ import { TalkGateway } from './talk.gateway';
     // ]),
   ],
   controllers: [TalkController],
-  providers: [TalkRepository, TalkService, TalkGateway, MessageRepository],
+  providers: [TalkRepository, TalkService, TalkGateway, MessageRepository, AttendeesRepository],
 })
 export class TalkModule {}

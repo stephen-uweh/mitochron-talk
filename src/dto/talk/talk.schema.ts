@@ -26,7 +26,7 @@ export class Message {
     _id: Types.ObjectId;
 
     @Prop()
-    attendeeId: string;
+    attendeeEmail: string;
 
     @Prop()
     talkId: string
