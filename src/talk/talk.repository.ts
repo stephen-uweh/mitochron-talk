@@ -43,6 +43,6 @@ export class MessageRepository {
 
     public async create(message): Promise <Message>{
         const newTalk = new this.messageModel(message)
-        return newTalk;
+        return newTalk.save();
     }
 }

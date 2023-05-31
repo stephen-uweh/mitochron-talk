@@ -142,7 +142,7 @@ export class TalkService {
 
         const newMesssage = await this.messageRepository.create(body)
 
-        this.talkGateway.server.emit(body.talkId, newMesssage)
+        this.talkGateway.server.emit('chat', newMesssage)
 
         return SuccessResponse(
             201,

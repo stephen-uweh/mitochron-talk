@@ -9,12 +9,15 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
+import { MessageRepository } from './talk.repository';
 
 const webSocketPort = process.env.WEB_SOCKET_PORT
 @WebSocketGateway(parseInt(webSocketPort), { transports: ['websocket'] })
 export class TalkGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
+    constructor(private messageRepository: MessageRepository){}
     private logger: Logger = new Logger('TalkGateway');
+    
 
     @WebSocketServer() server: Server;
 
@@ -29,5 +32,11 @@ export class TalkGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
   
     handleConnection(client: Socket, ...args: any[]) {
       this.logger.log(`Client Connected: ${client.id}`);
+    }
+
+    @SubscribeMessage('chat')
+    async handleEvent(@MessageBody() data: string): Promise<string> {
+      await this.messageRepository.create(JSON.parse(data))
+      return data;
     }
 }
