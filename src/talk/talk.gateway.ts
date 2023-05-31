@@ -37,6 +37,6 @@ export class TalkGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
     @SubscribeMessage('chat')
     async handleEvent(@MessageBody() data: string): Promise<string> {
       await this.messageRepository.create(JSON.parse(data))
-      return data;
+      return JSON.parse(data);
     }
 }
