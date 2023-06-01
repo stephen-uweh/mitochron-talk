@@ -10,6 +10,10 @@ import {
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { MessageRepository } from './talk.repository';
+import { config } from 'dotenv';
+
+
+config();
 
 const webSocketPort = process.env.WEB_SOCKET_PORT
 @WebSocketGateway(parseInt(webSocketPort), { transports: ['websocket'] })
