@@ -1,0 +1,50 @@
+version: "3.8"
+
+# virtual networks inside cluster, to let runing containers talk to each other
+networks:
+  nginx-reverse: # root nginx-reverse to api-example and wp
+
+# declare all services: nginx-reverse (api-example (redis, mongo), wp (mysql))
+services:
+  # root service: nginx as reverse-proxy for 1) api-example and 2) wp
+  nginx-reverse:
+    image: nginx
+    restart: always
+    deploy:
+      placement: # to run this service on a specific node
+        constraints:
+          - 'node.role == manager'
+    ports: # exposed ports out of cluster
+      - 3000:80
+      # - 3003:80 #websocket client port
+      # - 3000:443 # if you have certs
+    networks:
+      - nginx-reverse
+    depends_on: # do not start service until dependencies are started
+      - mitochron
+    volumes:
+      - ./nginx-reverse/default.conf:/etc/nginx/conf.d/default.conf  
+
+  # 1) api-example + redis + mongo
+  mitochron:
+    image: mitochron-ms # specify your repo name
+    build: # to build image with docker-compose
+      context: ../../
+      # dockerfile: /var/www/html/post-ms/Dockerfile
+    restart: always
+    # deploy: # uncomment to run multiple api-example services
+    #   replicas: 4
+    #   resources:
+    #     limits:
+    #       cpus: "1.5"
+    #       memory: 256M
+    environment:
+      - PORT=3000 
+      - DB=mongodb+srv://stephenuweh:tsWNoi9BEFhJ7jLd@cluster0.ycvehfk.mongodb.net/mitochron
+      - WEB_SOCKET_PORT=3002
+    # ports: # exposed ports out of cluster
+    #   - 3000:3000  
+    networks:
+      - nginx-reverse
+
+

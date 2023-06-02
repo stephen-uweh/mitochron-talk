@@ -13,9 +13,7 @@ import { MessageRepository } from './talk.repository';
 import { config } from 'dotenv';
 
 
-
-const webSocketPort = process.env.WEB_SOCKET_PORT
-@WebSocketGateway(parseInt(webSocketPort), { transports: ['websocket'] })
+@WebSocketGateway()
 export class TalkGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
     constructor(private messageRepository: MessageRepository){}
