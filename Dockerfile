@@ -50,7 +50,7 @@ COPY package*.json /usr/src/app/
 COPY . /usr/src/app
 
 # Install app dependencies
-RUN node -v && ls && npm install 
+RUN node -v && ls && npm install --force
 
 # Creates a "dist" folder with the production build
 RUN npm run build
