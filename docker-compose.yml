@@ -41,7 +41,6 @@ services:
     environment:
       - PORT=3000 
       - DB=mongodb+srv://stephenuweh:tsWNoi9BEFhJ7jLd@cluster0.ycvehfk.mongodb.net/mitochron
-      - WEB_SOCKET_PORT=3002
     # ports: # exposed ports out of cluster
     #   - 3000:3000  
     networks:
